@@ -19,7 +19,7 @@
 
     .card {
       max-width: 430px;
-      margin: 35px auto;
+      margin: 25px auto;
       padding: 25px 18px;
       background: #1b1b1b;
       border-radius: 22px;
@@ -32,7 +32,7 @@
     }
 
     h1 {
-      font-size: 26px;
+      font-size: 25px;
       margin: 15px 0 5px;
     }
 
@@ -42,34 +42,37 @@
       margin-bottom: 20px;
     }
 
-    .choice {
+    button {
       width: 100%;
       padding: 17px;
-      margin: 7px 0;
+      margin: 8px 0;
       border: 0;
       border-radius: 10px;
       font-weight: bold;
       cursor: pointer;
     }
 
-    #scannerArea {
+    #scannerPage {
       display: none;
     }
 
     #reader {
       width: 100%;
-      background: #111;
-      border-radius: 15px;
-      overflow: hidden;
+      margin-top: 15px;
     }
 
     #status {
       margin-top: 15px;
-      padding: 15px;
-      background: #252525;
+      padding: 18px;
+      background: #292929;
       border-radius: 10px;
       line-height: 1.6;
-      min-height: 40px;
+      min-height: 45px;
+    }
+
+    .success {
+      font-size: 22px;
+      font-weight: bold;
     }
 
     .footer {
@@ -89,7 +92,7 @@
     PASSION CITY CHURCH
   </div>
 
-  <div id="selection">
+  <div id="homePage">
 
     <h1>Attendance Scanner</h1>
 
@@ -97,99 +100,176 @@
       Select today's celebration
     </div>
 
-    <button class="choice"
-      onclick="startScanner('SUNDAY CELL CELEBRATION')">
+    <button onclick="openScanner('SUNDAY CELL CELEBRATION')">
       SUNDAY CELL CELEBRATION
     </button>
 
-    <button class="choice"
-      onclick="startScanner('YOUTH CELL CELEBRATION')">
+    <button onclick="openScanner('YOUTH CELL CELEBRATION')">
       YOUTH CELL CELEBRATION
     </button>
 
   </div>
 
-  <div id="scannerArea">
+
+  <div id="scannerPage">
 
     <h1>Scan Member QR</h1>
 
-    <div id="celebrationName"
+    <div id="celebration"
          class="subtitle">
     </div>
 
     <div id="reader"></div>
 
     <div id="status">
-      Preparing camera...
+      Starting camera...
     </div>
 
   </div>
+
 
   <div class="footer">
     PASSION CELL CELEBRATION
   </div>
 
 </div>
+
+
 <script>
 
-const WEB_APP_URL =
-  'https://script.google.com/macros/s/AKfycbxOBz-XZL8b16Fhg8XhpbX8M5w8U79WwQ6ethXJm8nHic39JdvyrJ7M_yYNaomKHWZo/exec';
-
-let celebration = '';
-let scanner = null;
-let scanning = true;
+let qrScanner = null;
+let scanLocked = false;
 
 
-function startScanner(type) {
+async function openScanner(type) {
 
-  celebration = type;
-
-  document.getElementById('selection').style.display =
+  document.getElementById('homePage').style.display =
     'none';
 
-  document.getElementById('scannerArea').style.display =
+  document.getElementById('scannerPage').style.display =
     'block';
 
-  document.getElementById('celebrationName').textContent =
-    celebration;
+  document.getElementById('celebration').textContent =
+    type;
 
   document.getElementById('status').innerHTML =
-    'Starting camera...';
+    'Opening rear camera...';
 
 
-  scanner = new Html5QrcodeScanner(
-    'reader',
-    {
-      fps: 10,
-      qrbox: {
-        width: 230,
-        height: 230
+  qrScanner =
+    new Html5Qrcode('reader');
+
+
+  try {
+
+    await qrScanner.start(
+
+      {
+        facingMode: {
+          exact: 'environment'
+        }
       },
-      rememberLastUsedCamera: true,
-      supportedScanTypes: [
-        Html5QrcodeScanType.SCAN_TYPE_CAMERA
-      ]
-    },
-    false
-  );
+
+      {
+        fps: 15,
+
+        qrbox: function(viewfinderWidth, viewfinderHeight) {
+
+          const size =
+            Math.floor(
+              Math.min(
+                viewfinderWidth,
+                viewfinderHeight
+              ) * 0.75
+            );
+
+          return {
+            width: size,
+            height: size
+          };
+        },
+
+        aspectRatio: 1.0,
+
+        disableFlip: true
+      },
+
+      onScanSuccess,
+
+      function(errorMessage) {
+        // Ignore normal frame scan failures.
+      }
+
+    );
 
 
-  scanner.render(
-    onScanSuccess,
-    onScanFailure
-  );
+    document.getElementById('status').innerHTML =
+      'Point the camera at the member QR code.';
+
+
+  } catch (error) {
+
+
+    // Fallback for phones that reject exact environment mode.
+
+    try {
+
+      await qrScanner.start(
+
+        {
+          facingMode: 'environment'
+        },
+
+        {
+          fps: 15,
+
+          qrbox: {
+            width: 250,
+            height: 250
+          },
+
+          disableFlip: true
+        },
+
+        onScanSuccess,
+
+        function(errorMessage) {}
+
+      );
+
+
+      document.getElementById('status').innerHTML =
+        'Point the camera at the member QR code.';
+
+
+    } catch (secondError) {
+
+      document.getElementById('status').innerHTML =
+        '<b>CAMERA ERROR</b><br>' +
+        secondError;
+
+    }
+
+  }
+
 }
 
 
 function onScanSuccess(decodedText) {
 
-  if (!scanning) return;
+  if (scanLocked) return;
 
-  scanning = false;
+  scanLocked = true;
+
 
   let memberId =
-    String(decodedText).trim();
+    String(decodedText || '')
+      .trim()
+      .toUpperCase();
 
+
+  // Supports simple PCC-001 QR
+  // and old URL QR containing ?id=PCC-001
 
   try {
 
@@ -200,39 +280,34 @@ function onScanSuccess(decodedText) {
       qrUrl.searchParams.get('id');
 
     if (id) {
-      memberId = id;
+      memberId =
+        id.trim().toUpperCase();
     }
 
   } catch (e) {}
 
 
   document.getElementById('status').innerHTML =
-    'QR detected: <b>' +
+    '<div class="success">✓ QR READ!</div>' +
+    '<br>Member ID: <b>' +
     memberId +
     '</b>';
 
-  /*
-    NEXT STEP:
-    After camera testing works,
-    we will connect this to the
-    Google Sheet attendance backend.
-  */
+
+  if (navigator.vibrate) {
+    navigator.vibrate(150);
+  }
 
 
   setTimeout(function() {
 
+    scanLocked = false;
+
     document.getElementById('status').innerHTML =
       'Ready for next member...';
 
-    scanning = true;
-
   }, 3000);
 
-}
-
-
-function onScanFailure(error) {
-  // Normal while searching for a QR.
 }
 
 </script>
