@@ -71,8 +71,24 @@
     }
 
     .success {
+      font-size: 21px;
+      font-weight: bold;
+    }
+
+    .duplicate {
+      font-size: 21px;
+      font-weight: bold;
+    }
+
+    .error {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .name {
       font-size: 22px;
       font-weight: bold;
+      margin-top: 8px;
     }
 
     .footer {
@@ -115,9 +131,7 @@
 
     <h1>Scan Member QR</h1>
 
-    <div id="celebration"
-         class="subtitle">
-    </div>
+    <div id="celebration" class="subtitle"></div>
 
     <div id="reader"></div>
 
@@ -137,28 +151,27 @@
 
 <script>
 
+const API_URL =
+  'https://script.google.com/macros/s/AKfycbxOBz-XZL8b16Fhg8XhpbX8M5w8U79WwQ6ethXJm8nHic39JdvyrJ7M_yYNaomKHWZo/exec';
+
 let qrScanner = null;
 let scanLocked = false;
+let selectedCelebration = '';
 
 
 async function openScanner(type) {
 
-  document.getElementById('homePage').style.display =
-    'none';
+  selectedCelebration = type;
 
-  document.getElementById('scannerPage').style.display =
-    'block';
+  document.getElementById('homePage').style.display = 'none';
+  document.getElementById('scannerPage').style.display = 'block';
 
-  document.getElementById('celebration').textContent =
-    type;
+  document.getElementById('celebration').textContent = type;
 
   document.getElementById('status').innerHTML =
     'Opening rear camera...';
 
-
-  qrScanner =
-    new Html5Qrcode('reader');
-
+  qrScanner = new Html5Qrcode('reader');
 
   try {
 
@@ -175,13 +188,12 @@ async function openScanner(type) {
 
         qrbox: function(viewfinderWidth, viewfinderHeight) {
 
-          const size =
-            Math.floor(
-              Math.min(
-                viewfinderWidth,
-                viewfinderHeight
-              ) * 0.75
-            );
+          const size = Math.floor(
+            Math.min(
+              viewfinderWidth,
+              viewfinderHeight
+            ) * 0.75
+          );
 
           return {
             width: size,
@@ -190,27 +202,19 @@ async function openScanner(type) {
         },
 
         aspectRatio: 1.0,
-
         disableFlip: true
       },
 
       onScanSuccess,
 
-      function(errorMessage) {
-        // Ignore normal frame scan failures.
-      }
+      function() {}
 
     );
-
 
     document.getElementById('status').innerHTML =
       'Point the camera at the member QR code.';
 
-
   } catch (error) {
-
-
-    // Fallback for phones that reject exact environment mode.
 
     try {
 
@@ -222,80 +226,126 @@ async function openScanner(type) {
 
         {
           fps: 15,
-
           qrbox: {
             width: 250,
             height: 250
           },
-
           disableFlip: true
         },
 
         onScanSuccess,
 
-        function(errorMessage) {}
+        function() {}
 
       );
-
 
       document.getElementById('status').innerHTML =
         'Point the camera at the member QR code.';
 
-
     } catch (secondError) {
 
       document.getElementById('status').innerHTML =
-        '<b>CAMERA ERROR</b><br>' +
+        '<div class="error">CAMERA ERROR</div><br>' +
         secondError;
-
     }
-
   }
-
 }
 
 
-function onScanSuccess(decodedText) {
+async function onScanSuccess(decodedText) {
 
   if (scanLocked) return;
 
   scanLocked = true;
-
 
   let memberId =
     String(decodedText || '')
       .trim()
       .toUpperCase();
 
-
-  // Supports simple PCC-001 QR
-  // and old URL QR containing ?id=PCC-001
-
   try {
 
-    const qrUrl =
-      new URL(decodedText);
+    const qrUrl = new URL(decodedText);
 
-    const id =
-      qrUrl.searchParams.get('id');
+    const id = qrUrl.searchParams.get('id');
 
     if (id) {
-      memberId =
-        id.trim().toUpperCase();
+      memberId = id.trim().toUpperCase();
     }
 
   } catch (e) {}
 
 
   document.getElementById('status').innerHTML =
-    '<div class="success">✓ QR READ!</div>' +
-    '<br>Member ID: <b>' +
-    memberId +
-    '</b>';
+    'QR detected...<br>Checking attendance...';
 
 
   if (navigator.vibrate) {
-    navigator.vibrate(150);
+    navigator.vibrate(100);
+  }
+
+
+  try {
+
+    const requestUrl =
+      API_URL +
+      '?id=' +
+      encodeURIComponent(memberId) +
+      '&celebration=' +
+      encodeURIComponent(selectedCelebration) +
+      '&t=' +
+      Date.now();
+
+
+    const response = await fetch(requestUrl);
+
+    const result = await response.json();
+
+
+    if (result.status === 'success') {
+
+      document.getElementById('status').innerHTML =
+        '<div class="success">✓ WELCOME TO PASSION CITY CHURCH</div>' +
+        '<div class="name">' + result.name + '</div>' +
+        '<br>' +
+        result.network +
+        '<br>Cell Leader: ' +
+        result.leader;
+
+      if (navigator.vibrate) {
+        navigator.vibrate([100, 70, 100]);
+      }
+
+    }
+
+    else if (result.status === 'duplicate') {
+
+      document.getElementById('status').innerHTML =
+        '<div class="duplicate">⚠ ALREADY CHECKED IN</div>' +
+        '<div class="name">' + result.name + '</div>' +
+        '<br>' +
+        result.network +
+        '<br>Cell Leader: ' +
+        result.leader;
+
+    }
+
+    else {
+
+      document.getElementById('status').innerHTML =
+        '<div class="error">✕ ' +
+        (result.message || 'MEMBER NOT FOUND') +
+        '</div>';
+
+    }
+
+
+  } catch (error) {
+
+    document.getElementById('status').innerHTML =
+      '<div class="error">CONNECTION ERROR</div>' +
+      '<br>Please try again.';
+
   }
 
 
@@ -306,7 +356,7 @@ function onScanSuccess(decodedText) {
     document.getElementById('status').innerHTML =
       'Ready for next member...';
 
-  }, 3000);
+  }, 3500);
 
 }
 
