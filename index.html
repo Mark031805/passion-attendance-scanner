@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Passion City Church Attendance</title>
+
+  <script src="https://unpkg.com/html5-qrcode"></script>
+
+  <style>
+    body {
+      margin: 0;
+      background: #101010;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    .card {
+      max-width: 430px;
+      margin: 35px auto;
+      padding: 25px 18px;
+      background: #1b1b1b;
+      border-radius: 22px;
+    }
+
+    .church {
+      font-size: 10px;
+      letter-spacing: 4px;
+      opacity: .6;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin: 15px 0 5px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      opacity: .7;
+      margin-bottom: 20px;
+    }
+
+    .choice {
+      width: 100%;
+      padding: 17px;
+      margin: 7px 0;
+      border: 0;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #scannerArea {
+      display: none;
+    }
+
+    #reader {
+      width: 100%;
+      background: #111;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+
+    #status {
+      margin-top: 15px;
+      padding: 15px;
+      background: #252525;
+      border-radius: 10px;
+      line-height: 1.6;
+      min-height: 40px;
+    }
+
+    .footer {
+      margin-top: 25px;
+      font-size: 9px;
+      letter-spacing: 3px;
+      opacity: .35;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <div class="church">
+    PASSION CITY CHURCH
+  </div>
+
+  <div id="selection">
+
+    <h1>Attendance Scanner</h1>
+
+    <div class="subtitle">
+      Select today's celebration
+    </div>
+
+    <button class="choice"
+      onclick="startScanner('SUNDAY CELL CELEBRATION')">
+      SUNDAY CELL CELEBRATION
+    </button>
+
+    <button class="choice"
+      onclick="startScanner('YOUTH CELL CELEBRATION')">
+      YOUTH CELL CELEBRATION
+    </button>
+
+  </div>
+
+  <div id="scannerArea">
+
+    <h1>Scan Member QR</h1>
+
+    <div id="celebrationName"
+         class="subtitle">
+    </div>
+
+    <div id="reader"></div>
+
+    <div id="status">
+      Preparing camera...
+    </div>
+
+  </div>
+
+  <div class="footer">
+    PASSION CELL CELEBRATION
+  </div>
+
+</div>
+<script>
+
+const WEB_APP_URL =
+  'https://script.google.com/macros/s/AKfycbxOBz-XZL8b16Fhg8XhpbX8M5w8U79WwQ6ethXJm8nHic39JdvyrJ7M_yYNaomKHWZo/exec';
+
+let celebration = '';
+let scanner = null;
+let scanning = true;
+
+
+function startScanner(type) {
+
+  celebration = type;
+
+  document.getElementById('selection').style.display =
+    'none';
+
+  document.getElementById('scannerArea').style.display =
+    'block';
+
+  document.getElementById('celebrationName').textContent =
+    celebration;
+
+  document.getElementById('status').innerHTML =
+    'Starting camera...';
+
+
+  scanner = new Html5QrcodeScanner(
+    'reader',
+    {
+      fps: 10,
+      qrbox: {
+        width: 230,
+        height: 230
+      },
+      rememberLastUsedCamera: true,
+      supportedScanTypes: [
+        Html5QrcodeScanType.SCAN_TYPE_CAMERA
+      ]
+    },
+    false
+  );
+
+
+  scanner.render(
+    onScanSuccess,
+    onScanFailure
+  );
+}
+
+
+function onScanSuccess(decodedText) {
+
+  if (!scanning) return;
+
+  scanning = false;
+
+  let memberId =
+    String(decodedText).trim();
+
+
+  try {
+
+    const qrUrl =
+      new URL(decodedText);
+
+    const id =
+      qrUrl.searchParams.get('id');
+
+    if (id) {
+      memberId = id;
+    }
+
+  } catch (e) {}
+
+
+  document.getElementById('status').innerHTML =
+    'QR detected: <b>' +
+    memberId +
+    '</b>';
+
+  /*
+    NEXT STEP:
+    After camera testing works,
+    we will connect this to the
+    Google Sheet attendance backend.
+  */
+
+
+  setTimeout(function() {
+
+    document.getElementById('status').innerHTML =
+      'Ready for next member...';
+
+    scanning = true;
+
+  }, 3000);
+
+}
+
+
+function onScanFailure(error) {
+  // Normal while searching for a QR.
+}
+
+</script>
+
+</body>
+</html>
