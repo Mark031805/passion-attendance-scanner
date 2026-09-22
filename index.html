@@ -1,150 +1,439 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Passion City Church Attendance</title>
 
-  <title>Passion City Church Attendance</title>
+<script src="https://unpkg.com/html5-qrcode"></script>
 
-  <script src="https://unpkg.com/html5-qrcode"></script>
+<style>
+*{box-sizing:border-box}
 
-  <style>
-    body {
-      margin: 0;
-      background: #101010;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
+body{
+ margin:0;
+ background:#0d0d0d;
+ color:#fff;
+ font-family:Arial,sans-serif;
+ text-align:center;
+ min-height:100vh;
+}
 
-    .card {
-      max-width: 430px;
-      margin: 25px auto;
-      padding: 25px 18px;
-      background: #1b1b1b;
-      border-radius: 22px;
-    }
+.card{
+ max-width:440px;
+ margin:20px auto;
+ padding:28px 20px;
+ background:#181818;
+ border-radius:22px;
+}
 
-    .church {
-      font-size: 10px;
-      letter-spacing: 4px;
-      opacity: .6;
-    }
+.church{
+ font-size:10px;
+ letter-spacing:4px;
+ opacity:.65;
+}
 
-    h1 {
-      font-size: 25px;
-      margin: 15px 0 5px;
-    }
+h1{
+ font-size:25px;
+ margin:16px 0 6px;
+}
 
-    .subtitle {
-      font-size: 13px;
-      opacity: .7;
-      margin-bottom: 20px;
-    }
+.subtitle{
+ font-size:13px;
+ opacity:.65;
+ margin-bottom:22px;
+}
 
-    button {
-      width: 100%;
-      padding: 17px;
-      margin: 8px 0;
-      border: 0;
-      border-radius: 10px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+button{
+ width:100%;
+ padding:17px;
+ margin:7px 0;
+ border:0;
+ border-radius:11px;
+ font-size:14px;
+ font-weight:bold;
+ cursor:pointer;
+}
 
-    #scannerPage {
-      display: none;
-    }
+.primary{
+ background:#fff;
+ color:#111;
+}
 
-    #reader {
-      width: 100%;
-      margin-top: 15px;
-    }
+.secondary{
+ background:#292929;
+ color:#fff;
+ border:1px solid #444;
+}
 
-    #status {
-      margin-top: 15px;
-      padding: 18px;
-      background: #292929;
-      border-radius: 10px;
-      line-height: 1.6;
-      min-height: 45px;
-    }
+.back{
+ background:transparent;
+ color:#aaa;
+ border:1px solid #333;
+}
 
-    .success {
-      font-size: 21px;
-      font-weight: bold;
-    }
+#eventPage,
+#scannerPage,
+#vipPage{
+ display:none;
+}
 
-    .duplicate {
-      font-size: 21px;
-      font-weight: bold;
-    }
+#reader{
+ width:100%;
+ margin-top:15px;
+}
 
-    .error {
-      font-size: 20px;
-      font-weight: bold;
-    }
+#status,
+#vipStatus{
+ margin-top:15px;
+ padding:18px;
+ background:#252525;
+ border-radius:11px;
+ line-height:1.6;
+ min-height:55px;
+}
 
-    .name {
-      font-size: 22px;
-      font-weight: bold;
-      margin-top: 8px;
-    }
+.success,
+.duplicate{
+ font-size:20px;
+ font-weight:bold;
+}
 
-    .footer {
-      margin-top: 25px;
-      font-size: 9px;
-      letter-spacing: 3px;
-      opacity: .35;
-    }
-  </style>
+.error{
+ font-size:18px;
+ font-weight:bold;
+}
+
+.name{
+ font-size:22px;
+ font-weight:bold;
+ margin-top:8px;
+}
+
+.formGroup{
+ text-align:left;
+ margin:13px 0;
+}
+
+label{
+ display:block;
+ font-size:12px;
+ margin-bottom:6px;
+ color:#bbb;
+}
+
+input,
+select{
+ width:100%;
+ padding:14px;
+ border-radius:9px;
+ border:1px solid #3b3b3b;
+ background:#222;
+ color:#fff;
+ font-size:15px;
+ outline:none;
+}
+
+input:focus,
+select:focus{
+ border-color:#888;
+}
+
+.sectionTitle{
+ text-align:left;
+ font-size:11px;
+ letter-spacing:2px;
+ color:#888;
+ margin:22px 0 8px;
+}
+
+.footer{
+ margin-top:28px;
+ font-size:9px;
+ letter-spacing:3px;
+ opacity:.3;
+}
+</style>
 </head>
 
 <body>
 
 <div class="card">
 
-  <div class="church">
-    PASSION CITY CHURCH
+ <div class="church">PASSION CITY CHURCH</div>
+
+ <div id="homePage">
+  <h1>Welcome Home</h1>
+  <div class="subtitle">
+   Passion Cell Celebration Attendance
   </div>
 
-  <div id="homePage">
+  <button class="primary" onclick="showEvents()">
+   SCAN REGULAR MEMBER
+  </button>
 
-    <h1>Attendance Scanner</h1>
+  <button class="secondary" onclick="openVIP()">
+   REGISTER VIP / FIRST TIMER
+  </button>
+ </div>
 
-    <div class="subtitle">
-      Select today's celebration
-    </div>
 
-    <button onclick="openScanner('SUNDAY CELL CELEBRATION')">
-      SUNDAY CELL CELEBRATION
-    </button>
+ <div id="eventPage">
+  <h1>Select Celebration</h1>
+  <div class="subtitle">
+   Choose today's celebration
+  </div>
 
-    <button onclick="openScanner('YOUTH CELL CELEBRATION')">
-      YOUTH CELL CELEBRATION
-    </button>
+  <button class="primary"
+   onclick="openScanner('SUNDAY CELL CELEBRATION')">
+   SUNDAY CELL CELEBRATION
+  </button>
 
+  <button class="primary"
+   onclick="openScanner('YOUTH CELL CELEBRATION')">
+   YOUTH CELL CELEBRATION
+  </button>
+
+  <button class="back" onclick="goHome()">
+   ← BACK
+  </button>
+ </div>
+
+
+ <div id="scannerPage">
+  <h1>Scan Member QR</h1>
+
+  <div id="celebration" class="subtitle"></div>
+
+  <div id="reader"></div>
+
+  <div id="status">
+   Starting camera...
+  </div>
+
+  <button class="back" onclick="stopScanner()">
+   ← BACK
+  </button>
+ </div>
+
+
+ <div id="vipPage">
+
+  <h1>VIP Registration</h1>
+
+  <div class="subtitle">
+   Welcome to Passion City Church
+  </div>
+
+  <div class="sectionTitle">
+   GUEST INFORMATION
+  </div>
+
+  <div class="formGroup">
+   <label>Full Name *</label>
+   <input id="vipName"
+    type="text"
+    placeholder="Enter full name">
+  </div>
+
+  <div class="formGroup">
+   <label>Age</label>
+   <input id="vipAge"
+    type="number"
+    min="1"
+    max="120"
+    placeholder="Age">
+  </div>
+
+  <div class="formGroup">
+   <label>Gender *</label>
+   <select id="vipGender">
+    <option value="">Select gender</option>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+   </select>
+  </div>
+
+  <div class="formGroup">
+   <label>Invited By</label>
+   <input id="vipInvitedBy"
+    type="text"
+    placeholder="Name of person who invited you">
+  </div>
+  <div class="sectionTitle">
+   CHURCH INFORMATION
+  </div>
+
+  <div class="formGroup">
+   <label>Primary Leader *</label>
+
+   <select id="vipPrimary">
+    <option value="">Select Primary Leader</option>
+
+    <option value="Pastor Batch Reyes">
+     Pastor Batch Reyes
+    </option>
+
+    <option value="Pastora Mel Reyes">
+     Pastora Mel Reyes
+    </option>
+
+    <option value="Ps. Jonathan David Reyes">
+     Ps. Jonathan David Reyes
+    </option>
+
+    <option value="John Daniel Reyes">
+     John Daniel Reyes
+    </option>
+
+    <option value="John Micah Wandaga">
+     John Micah Wandaga
+    </option>
+
+    <option value="John Patrick Inanod">
+     John Patrick Inanod
+    </option>
+
+    <option value="Jomari Miranda">
+     Jomari Miranda
+    </option>
+
+    <option value="Kerby Villegas">
+     Kerby Villegas
+    </option>
+
+    <option value="Mark Jude Mangiob">
+     Mark Jude Mangiob
+    </option>
+
+    <option value="Gerald Toledo">
+     Gerald Toledo
+    </option>
+
+    <option value="Christopher Pegollo">
+     Christopher Pegollo
+    </option>
+
+    <option value="Jhunebent Olazo">
+     Jhunebent Olazo
+    </option>
+
+    <option value="Garry Suzon">
+     Garry Suzon
+    </option>
+
+    <option value="Caroline Suzon">
+     Caroline Suzon
+    </option>
+
+    <option value="Charmane Dinna Villegas">
+     Charmane Dinna Villegas
+    </option>
+
+    <option value="Ching Zolina">
+     Ching Zolina
+    </option>
+
+    <option value="Elma Mayrina">
+     Elma Mayrina
+    </option>
+
+    <option value="Janette Sarah Toledo">
+     Janette Sarah Toledo
+    </option>
+
+    <option value="Jhoy Olazo">
+     Jhoy Olazo
+    </option>
+
+    <option value="Lieza Nicole Sison">
+     Lieza Nicole Sison
+    </option>
+
+    <option value="Ma Socorro Padasas">
+     Ma Socorro Padasas
+    </option>
+
+    <option value="Nitz Villacorte">
+     Nitz Villacorte
+    </option>
+
+    <option value="Precious Ann Bayrante">
+     Precious Ann Bayrante
+    </option>
+
+    <option value="Raven Mangiob">
+     Raven Mangiob
+    </option>
+
+    <option value="Riazel Kayle Tech">
+     Riazel Kayle Tech
+    </option>
+
+    <option value="Susan Loreto">
+     Susan Loreto
+    </option>
+   </select>
   </div>
 
 
-  <div id="scannerPage">
+  <div class="formGroup">
+   <label>Cell Leader *</label>
 
-    <h1>Scan Member QR</h1>
-
-    <div id="celebration" class="subtitle"></div>
-
-    <div id="reader"></div>
-
-    <div id="status">
-      Starting camera...
-    </div>
-
+   <input
+    id="vipLeader"
+    type="text"
+    placeholder="Enter Cell Leader">
   </div>
 
 
-  <div class="footer">
-    PASSION CELL CELEBRATION
+  <div class="formGroup">
+   <label>Celebration *</label>
+
+   <select id="vipCelebration">
+
+    <option value="">
+     Select Celebration
+    </option>
+
+    <option value="SUNDAY CELL CELEBRATION">
+     Sunday Cell Celebration
+    </option>
+
+    <option value="YOUTH CELL CELEBRATION">
+     Youth Cell Celebration
+    </option>
+
+   </select>
   </div>
+
+
+  <button
+   class="primary"
+   id="vipSubmit"
+   onclick="submitVIP()">
+   SUBMIT VIP REGISTRATION
+  </button>
+
+
+  <div
+   id="vipStatus"
+   style="display:none">
+  </div>
+
+
+  <button
+   class="back"
+   onclick="goHome()">
+   ← BACK
+  </button>
+
+ </div>
+
+
+ <div class="footer">
+  PASSION CELL CELEBRATION
+ </div>
 
 </div>
 
@@ -152,211 +441,469 @@
 <script>
 
 const API_URL =
-  'https://script.google.com/macros/s/AKfycbxOBz-XZL8b16Fhg8XhpbX8M5w8U79WwQ6ethXJm8nHic39JdvyrJ7M_yYNaomKHWZo/exec';
+'https://script.google.com/macros/s/AKfycbxOBz-XZL8b16Fhg8XhpbX8M5w8U79WwQ6ethXJm8nHic39JdvyrJ7M_yYNaomKHWZo/exec';
 
 let qrScanner = null;
 let scanLocked = false;
 let selectedCelebration = '';
 
 
-async function openScanner(type) {
+function hidePages(){
 
-  selectedCelebration = type;
+ document.getElementById('homePage').style.display='none';
 
-  document.getElementById('homePage').style.display = 'none';
-  document.getElementById('scannerPage').style.display = 'block';
+ document.getElementById('eventPage').style.display='none';
 
-  document.getElementById('celebration').textContent = type;
+ document.getElementById('scannerPage').style.display='none';
 
-  document.getElementById('status').innerHTML =
-    'Opening rear camera...';
+ document.getElementById('vipPage').style.display='none';
 
-  qrScanner = new Html5Qrcode('reader');
-
-  try {
-
-    await qrScanner.start(
-
-      {
-        facingMode: {
-          exact: 'environment'
-        }
-      },
-
-      {
-        fps: 15,
-
-        qrbox: function(viewfinderWidth, viewfinderHeight) {
-
-          const size = Math.floor(
-            Math.min(
-              viewfinderWidth,
-              viewfinderHeight
-            ) * 0.75
-          );
-
-          return {
-            width: size,
-            height: size
-          };
-        },
-
-        aspectRatio: 1.0,
-        disableFlip: true
-      },
-
-      onScanSuccess,
-
-      function() {}
-
-    );
-
-    document.getElementById('status').innerHTML =
-      'Point the camera at the member QR code.';
-
-  } catch (error) {
-
-    try {
-
-      await qrScanner.start(
-
-        {
-          facingMode: 'environment'
-        },
-
-        {
-          fps: 15,
-          qrbox: {
-            width: 250,
-            height: 250
-          },
-          disableFlip: true
-        },
-
-        onScanSuccess,
-
-        function() {}
-
-      );
-
-      document.getElementById('status').innerHTML =
-        'Point the camera at the member QR code.';
-
-    } catch (secondError) {
-
-      document.getElementById('status').innerHTML =
-        '<div class="error">CAMERA ERROR</div><br>' +
-        secondError;
-    }
-  }
 }
 
 
-async function onScanSuccess(decodedText) {
+function goHome(){
 
-  if (scanLocked) return;
+ if(qrScanner){
+  try{
+   qrScanner.stop();
+  }catch(e){}
+ }
 
-  scanLocked = true;
+ qrScanner=null;
+ scanLocked=false;
 
-  let memberId =
-    String(decodedText || '')
-      .trim()
-      .toUpperCase();
+ hidePages();
 
-  try {
+ document.getElementById('homePage').style.display='block';
 
-    const qrUrl = new URL(decodedText);
-
-    const id = qrUrl.searchParams.get('id');
-
-    if (id) {
-      memberId = id.trim().toUpperCase();
-    }
-
-  } catch (e) {}
+}
 
 
-  document.getElementById('status').innerHTML =
-    'QR detected...<br>Checking attendance...';
+function showEvents(){
+
+ hidePages();
+
+ document.getElementById('eventPage').style.display='block';
+
+}
 
 
-  if (navigator.vibrate) {
-    navigator.vibrate(100);
+function openVIP(){
+
+ hidePages();
+
+ document.getElementById('vipPage').style.display='block';
+
+}
+
+
+async function openScanner(type){
+
+ selectedCelebration=type;
+
+ hidePages();
+
+ document.getElementById('scannerPage').style.display='block';
+
+ document.getElementById('celebration').textContent=type;
+
+ document.getElementById('status').innerHTML=
+ 'Opening rear camera...';
+
+ qrScanner=new Html5Qrcode('reader');
+
+ try{
+
+  await qrScanner.start(
+   {facingMode:{exact:'environment'}},
+   {
+    fps:15,
+    qrbox:function(w,h){
+     const size=
+      Math.floor(Math.min(w,h)*.75);
+
+     return{
+      width:size,
+      height:size
+     };
+    },
+    aspectRatio:1.0,
+    disableFlip:true
+   },
+   onScanSuccess,
+   function(){}
+  );
+
+  document.getElementById('status').innerHTML=
+   'Point the camera at the member QR code.';
+
+ }catch(error){
+
+  try{
+
+   await qrScanner.start(
+    {facingMode:'environment'},
+    {
+     fps:15,
+     qrbox:{
+      width:250,
+      height:250
+     },
+     disableFlip:true
+    },
+    onScanSuccess,
+    function(){}
+   );
+
+   document.getElementById('status').innerHTML=
+    'Point the camera at the member QR code.';
+
+  }catch(secondError){
+
+   document.getElementById('status').innerHTML=
+    '<div class="error">CAMERA ERROR</div><br>'+
+    secondError;
+
+  }
+ }
+
+}
+  async function onScanSuccess(decodedText){
+
+ if(scanLocked)return;
+
+ scanLocked=true;
+
+ let memberId=
+  String(decodedText || '')
+  .trim()
+  .toUpperCase();
+
+ try{
+
+  const qrUrl=new URL(decodedText);
+
+  const id=
+   qrUrl.searchParams.get('id');
+
+  if(id){
+   memberId=
+    id.trim().toUpperCase();
+  }
+
+ }catch(e){}
+
+
+ document.getElementById('status').innerHTML=
+  'QR detected...<br>Checking attendance...';
+
+
+ if(navigator.vibrate){
+  navigator.vibrate(100);
+ }
+
+
+ try{
+
+  const requestUrl=
+   API_URL+
+   '?id='+encodeURIComponent(memberId)+
+   '&celebration='+
+   encodeURIComponent(selectedCelebration)+
+   '&t='+Date.now();
+
+
+  const response=
+   await fetch(requestUrl);
+
+  const result=
+   await response.json();
+
+
+  if(result.status==='success'){
+
+   document.getElementById('status').innerHTML=
+    '<div class="success">'+
+    '✓ WELCOME TO PASSION CITY CHURCH'+
+    '</div>'+
+    '<div class="name">'+
+    result.name+
+    '</div><br>'+
+    result.network+
+    '<br>Cell Leader: '+
+    result.leader;
+
+
+   if(navigator.vibrate){
+    navigator.vibrate([100,70,100]);
+   }
+
+  }
+
+  else if(result.status==='duplicate'){
+
+   document.getElementById('status').innerHTML=
+    '<div class="duplicate">'+
+    '⚠ ALREADY CHECKED IN'+
+    '</div>'+
+    '<div class="name">'+
+    result.name+
+    '</div><br>'+
+    result.network+
+    '<br>Cell Leader: '+
+    result.leader;
+
+  }
+
+  else{
+
+   document.getElementById('status').innerHTML=
+    '<div class="error">✕ '+
+    (result.message || 'MEMBER NOT FOUND')+
+    '</div>';
+
+  }
+
+ }catch(error){
+
+  document.getElementById('status').innerHTML=
+   '<div class="error">'+
+   'CONNECTION ERROR'+
+   '</div><br>Please try again.';
+
+ }
+
+
+ setTimeout(function(){
+
+  scanLocked=false;
+
+  document.getElementById('status').innerHTML=
+   'Ready for next member...';
+
+ },3500);
+
+}
+
+
+
+async function stopScanner(){
+
+ if(qrScanner){
+
+  try{
+   await qrScanner.stop();
+  }catch(e){}
+
+ }
+
+ qrScanner=null;
+ scanLocked=false;
+
+ hidePages();
+
+ document.getElementById('eventPage').style.display='block';
+
+}
+
+
+
+async function submitVIP(){
+
+ const name=
+  document.getElementById('vipName')
+  .value.trim();
+
+ const age=
+  document.getElementById('vipAge')
+  .value.trim();
+
+ const gender=
+  document.getElementById('vipGender')
+  .value;
+
+ const invitedBy=
+  document.getElementById('vipInvitedBy')
+  .value.trim();
+
+ const primary=
+  document.getElementById('vipPrimary')
+  .value;
+
+ const leader=
+  document.getElementById('vipLeader')
+  .value.trim();
+
+ const celebration=
+  document.getElementById('vipCelebration')
+  .value;
+
+
+ const statusBox=
+  document.getElementById('vipStatus');
+
+ const submitButton=
+  document.getElementById('vipSubmit');
+
+
+ if(!name){
+
+  statusBox.style.display='block';
+
+  statusBox.innerHTML=
+   '<div class="error">'+
+   'PLEASE ENTER FULL NAME'+
+   '</div>';
+
+  return;
+
+ }
+
+
+ if(!gender){
+
+  statusBox.style.display='block';
+
+  statusBox.innerHTML=
+   '<div class="error">'+
+   'PLEASE SELECT GENDER'+
+   '</div>';
+
+  return;
+
+ }
+
+
+ if(!primary){
+
+  statusBox.style.display='block';
+
+  statusBox.innerHTML=
+   '<div class="error">'+
+   'PLEASE SELECT PRIMARY LEADER'+
+   '</div>';
+
+  return;
+
+ }
+
+
+ if(!leader){
+
+  statusBox.style.display='block';
+
+  statusBox.innerHTML=
+   '<div class="error">'+
+   'PLEASE ENTER CELL LEADER'+
+   '</div>';
+
+  return;
+
+ }
+
+
+ if(!celebration){
+
+  statusBox.style.display='block';
+
+  statusBox.innerHTML=
+   '<div class="error">'+
+   'PLEASE SELECT CELEBRATION'+
+   '</div>';
+
+  return;
+
+ }
+
+
+ submitButton.disabled=true;
+
+ submitButton.textContent=
+  'REGISTERING...';
+
+ statusBox.style.display='block';
+
+ statusBox.innerHTML=
+  'Saving VIP attendance...';
+
+
+ try{
+
+  const requestUrl=
+   API_URL+
+   '?action=vip'+
+   '&name='+encodeURIComponent(name)+
+   '&age='+encodeURIComponent(age)+
+   '&gender='+encodeURIComponent(gender)+
+   '&invitedBy='+encodeURIComponent(invitedBy)+
+   '&primary='+encodeURIComponent(primary)+
+   '&leader='+encodeURIComponent(leader)+
+   '&celebration='+encodeURIComponent(celebration)+
+   '&t='+Date.now();
+
+
+  const response=
+   await fetch(requestUrl);
+
+  const result=
+   await response.json();
+
+
+  if(result.status==='success'){
+
+   statusBox.innerHTML=
+    '<div class="success">'+
+    '✓ WELCOME TO PASSION CITY CHURCH'+
+    '</div>'+
+    '<div class="name">'+
+    result.name+
+    '</div>'+
+    '<br>VIP / FIRST TIMER'+
+    '<br>'+
+    result.primary+
+    '<br>Cell Leader: '+
+    result.leader;
+
+
+   document.getElementById('vipName').value='';
+   document.getElementById('vipAge').value='';
+   document.getElementById('vipGender').value='';
+   document.getElementById('vipInvitedBy').value='';
+   document.getElementById('vipPrimary').value='';
+   document.getElementById('vipLeader').value='';
+   document.getElementById('vipCelebration').value='';
+
+
+   if(navigator.vibrate){
+    navigator.vibrate([100,70,100]);
+   }
+
+  }
+
+  else{
+
+   statusBox.innerHTML=
+    '<div class="error">✕ '+
+    (result.message || 'REGISTRATION FAILED')+
+    '</div>';
+
   }
 
 
-  try {
+ }catch(error){
 
-    const requestUrl =
-      API_URL +
-      '?id=' +
-      encodeURIComponent(memberId) +
-      '&celebration=' +
-      encodeURIComponent(selectedCelebration) +
-      '&t=' +
-      Date.now();
+  statusBox.innerHTML=
+   '<div class="error">'+
+   'CONNECTION ERROR'+
+   '</div><br>Please try again.';
+
+ }
 
 
-    const response = await fetch(requestUrl);
+ submitButton.disabled=false;
 
-    const result = await response.json();
-
-
-    if (result.status === 'success') {
-
-      document.getElementById('status').innerHTML =
-        '<div class="success">✓ WELCOME TO PASSION CITY CHURCH</div>' +
-        '<div class="name">' + result.name + '</div>' +
-        '<br>' +
-        result.network +
-        '<br>Cell Leader: ' +
-        result.leader;
-
-      if (navigator.vibrate) {
-        navigator.vibrate([100, 70, 100]);
-      }
-
-    }
-
-    else if (result.status === 'duplicate') {
-
-      document.getElementById('status').innerHTML =
-        '<div class="duplicate">⚠ ALREADY CHECKED IN</div>' +
-        '<div class="name">' + result.name + '</div>' +
-        '<br>' +
-        result.network +
-        '<br>Cell Leader: ' +
-        result.leader;
-
-    }
-
-    else {
-
-      document.getElementById('status').innerHTML =
-        '<div class="error">✕ ' +
-        (result.message || 'MEMBER NOT FOUND') +
-        '</div>';
-
-    }
-
-
-  } catch (error) {
-
-    document.getElementById('status').innerHTML =
-      '<div class="error">CONNECTION ERROR</div>' +
-      '<br>Please try again.';
-
-  }
-
-
-  setTimeout(function() {
-
-    scanLocked = false;
-
-    document.getElementById('status').innerHTML =
-      'Ready for next member...';
-
-  }, 3500);
+ submitButton.textContent=
+  'SUBMIT VIP REGISTRATION';
 
 }
 
