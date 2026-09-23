@@ -2,972 +2,341 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width,initial-scale=1">
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Passion City Church Attendance</title>
-
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 <style>
-*{
- box-sizing:border-box;
-}
-
-body{
- margin:0;
- background:#0d0d0d;
- color:#fff;
- font-family:Arial,sans-serif;
- text-align:center;
- min-height:100vh;
-}
-
-.card{
- max-width:440px;
- margin:20px auto;
- padding:28px 20px;
- background:#181818;
- border-radius:22px;
-}
-
-.church{
- font-size:10px;
- letter-spacing:4px;
- opacity:.65;
-}
-
-h1{
- font-size:25px;
- margin:16px 0 6px;
-}
-
-.subtitle{
- font-size:13px;
- opacity:.65;
- margin-bottom:22px;
-}
-
-button{
- width:100%;
- padding:17px;
- margin:7px 0;
- border:0;
- border-radius:11px;
- font-size:14px;
- font-weight:bold;
- cursor:pointer;
-}
-
-button:disabled{
- opacity:.55;
- cursor:not-allowed;
-}
-
-.primary{
- background:#fff;
- color:#111;
-}
-
-.secondary{
- background:#292929;
- color:#fff;
- border:1px solid #444;
-}
-
-.back{
- background:transparent;
- color:#aaa;
- border:1px solid #333;
-}
-
-#eventPage,
-#scannerPage,
-#vipPage{
- display:none;
-}
-
-#reader{
- width:100%;
- margin-top:15px;
- overflow:hidden;
- border-radius:12px;
-}
-
-#status,
-#vipStatus{
- margin-top:15px;
- padding:18px;
- background:#252525;
- border-radius:11px;
- line-height:1.6;
- min-height:55px;
-}
-
-.success{
- font-size:20px;
- font-weight:bold;
-}
-
-.duplicate{
- font-size:20px;
- font-weight:bold;
-}
-
-.error{
- font-size:18px;
- font-weight:bold;
-}
-
-.processing{
- font-size:17px;
- font-weight:bold;
-}
-
-.name{
- font-size:22px;
- font-weight:bold;
- margin-top:8px;
-}
-
-.formGroup{
- text-align:left;
- margin:13px 0;
-}
-
-label{
- display:block;
- font-size:12px;
- margin-bottom:6px;
- color:#bbb;
-}
-
-input,
-select{
- width:100%;
- padding:14px;
- border-radius:9px;
- border:1px solid #3b3b3b;
- background:#222;
- color:#fff;
- font-size:15px;
- outline:none;
-}
-
-input:focus,
-select:focus{
- border-color:#888;
-}
-
-.sectionTitle{
- text-align:left;
- font-size:11px;
- letter-spacing:2px;
- color:#888;
- margin:22px 0 8px;
-}
-
-.footer{
- margin-top:28px;
- font-size:9px;
- letter-spacing:3px;
- opacity:.3;
-}
+*{box-sizing:border-box}
+body{margin:0;background:#0d0d0d;color:#fff;font-family:Arial,sans-serif;text-align:center}
+.card{max-width:440px;margin:20px auto;padding:28px 20px;background:#181818;border-radius:22px}
+.church{font-size:10px;letter-spacing:4px;opacity:.65}
+h1{font-size:25px;margin:16px 0 6px}
+.subtitle{font-size:13px;opacity:.65;margin-bottom:22px}
+button{width:100%;padding:17px;margin:7px 0;border:0;border-radius:11px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.5}
+.primary{background:#fff;color:#111}
+.secondary{background:#292929;color:#fff;border:1px solid #444}
+.back{background:transparent;color:#aaa;border:1px solid #333}
+#eventPage,#scannerPage,#vipPage{display:none}
+#reader{width:100%;margin-top:15px}
+#status,#vipStatus{margin-top:15px;padding:18px;background:#252525;border-radius:11px;line-height:1.6;min-height:55px}
+.success,.duplicate{font-size:20px;font-weight:bold}
+.error{font-size:18px;font-weight:bold}
+.name{font-size:22px;font-weight:bold;margin-top:8px}
+.formGroup{text-align:left;margin:13px 0}
+label{display:block;font-size:12px;margin-bottom:6px;color:#bbb}
+input,select{width:100%;padding:14px;border-radius:9px;border:1px solid #3b3b3b;background:#222;color:#fff;font-size:15px}
+.sectionTitle{text-align:left;font-size:11px;letter-spacing:2px;color:#888;margin:22px 0 8px}
+.footer{margin-top:28px;font-size:9px;letter-spacing:3px;opacity:.3}
 </style>
 </head>
 
 <body>
-
 <div class="card">
 
- <div class="church">
-  PASSION CITY CHURCH
- </div>
-
-
- <!-- HOME -->
-
- <div id="homePage">
-
-  <h1>Welcome Home</h1>
-
-  <div class="subtitle">
-   Passion Cell Celebration Attendance
-  </div>
-
-  <button
-   class="primary"
-   onclick="showEvents()">
-   SCAN REGULAR MEMBER
-  </button>
-
-  <button
-   class="secondary"
-   onclick="openVIP()">
-   REGISTER VIP / FIRST TIMER
-  </button>
-
- </div>
-
-
- <!-- REGULAR MEMBER EVENT SELECTION -->
-
- <div id="eventPage">
-
-  <h1>Select Celebration</h1>
-
-  <div class="subtitle">
-   Choose today's celebration
-  </div>
-
-  <button
-   class="primary"
-   onclick="openScanner(
-    'SUNDAY CELL CELEBRATION'
-   )">
-   SUNDAY CELL CELEBRATION
-  </button>
-
-  <button
-   class="primary"
-   onclick="openScanner(
-    'YOUTH CELL CELEBRATION'
-   )">
-   YOUTH CELL CELEBRATION
-  </button>
-
-  <button
-   class="back"
-   onclick="goHome()">
-   ← BACK
-  </button>
-
- </div>
-
-
- <!-- QR SCANNER -->
-
- <div id="scannerPage">
-
-  <h1>Scan Member QR</h1>
-
-  <div
-   id="celebration"
-   class="subtitle">
-  </div>
-
-  <div id="reader"></div>
-
-  <div id="status">
-   Starting camera...
-  </div>
-
-  <button
-   class="back"
-   onclick="stopScanner()">
-   ← BACK
-  </button>
-
- </div>
-
-
- <!-- VIP REGISTRATION -->
-
- <div id="vipPage">
-
-  <h1>VIP Registration</h1>
-
-  <div class="subtitle">
-   Welcome to Passion City Church
-  </div>
-
-
-  <div class="sectionTitle">
-   GUEST INFORMATION
-  </div>
-
-
-  <div class="formGroup">
-
-   <label>
-    Full Name *
-   </label>
-
-   <input
-    id="vipName"
-    type="text"
-    autocomplete="off"
-    placeholder="Enter full name">
-
-  </div>
-
-
-  <div class="formGroup">
-
-   <label>
-    Age
-   </label>
-
-   <input
-    id="vipAge"
-    type="number"
-    min="1"
-    max="120"
-    inputmode="numeric"
-    placeholder="Age">
-
-  </div>
-
-
-  <div class="formGroup">
-
-   <label>
-    Gender *
-   </label>
-
-   <select id="vipGender">
-
-    <option value="">
-     Select gender
-    </option>
-
-    <option value="Male">
-     Male
-    </option>
-
-    <option value="Female">
-     Female
-    </option>
-
-   </select>
-
-  </div>
-
-
-  <div class="formGroup">
-
-   <label>
-    Invited By
-   </label>
-
-   <input
-    id="vipInvitedBy"
-    type="text"
-    autocomplete="off"
-    placeholder="Name of person who invited you">
-
-  </div>
-
-
-  <div class="sectionTitle">
-   CHURCH INFORMATION
-  </div>
-
-
-  <div class="formGroup">
-
-   <label>
-    Primary Leader *
-   </label>
-
-   <select id="vipPrimary">
-
-    <option value="">
-     Select Primary Leader
-    </option>
-
-    <option value="Pastor Batch Reyes">
-     Pastor Batch Reyes
-    </option>
-
-    <option value="Pastora Mel Reyes">
-     Pastora Mel Reyes
-    </option>
-
-    <option value="Ps. Jonathan David Reyes">
-     Ps. Jonathan David Reyes
-    </option>
-
-    <option value="John Daniel Reyes">
-     John Daniel Reyes
-    </option>
-
-    <option value="John Micah Wandaga">
-     John Micah Wandaga
-    </option>
-
-    <option value="John Patrick Inanod">
-     John Patrick Inanod
-    </option>
-
-    <option value="Jomari Miranda">
-     Jomari Miranda
-    </option>
-
-    <option value="Kerby Villegas">
-     Kerby Villegas
-    </option>
-
-    <option value="Mark Jude Mangiob">
-     Mark Jude Mangiob
-    </option>
-
-    <option value="Gerald Toledo">
-     Gerald Toledo
-    </option>
-
-    <option value="Christopher Pegollo">
-     Christopher Pegollo
-    </option>
-
-    <option value="Jhunebent Olazo">
-     Jhunebent Olazo
-    </option>
-
-    <option value="Garry Suzon">
-     Garry Suzon
-    </option>
-
-    <option value="Caroline Suzon">
-     Caroline Suzon
-    </option>
-
-    <option value="Charmane Dinna Villegas">
-     Charmane Dinna Villegas
-    </option>
-
-    <option value="Ching Zolina">
-     Ching Zolina
-    </option>
-
-    <option value="Elma Mayrina">
-     Elma Mayrina
-    </option>
-
-    <option value="Janette Sarah Toledo">
-     Janette Sarah Toledo
-    </option>
-
-    <option value="Jhoy Olazo">
-     Jhoy Olazo
-    </option>
-
-    <option value="Lieza Nicole Sison">
-     Lieza Nicole Sison
-    </option>
-
-    <option value="Ma Socorro Padasas">
-     Ma Socorro Padasas
-    </option>
-
-    <option value="Nitz Villacorte">
-     Nitz Villacorte
-    </option>
-
-    <option value="Precious Ann Bayrante">
-     Precious Ann Bayrante
-    </option>
-
-    <option value="Raven Mangiob">
-     Raven Mangiob
-    </option>
-
-    <option value="Riazel Kayle Tech">
-     Riazel Kayle Tech
-    </option>
-
-    <option value="Susan Loreto">
-     Susan Loreto
-    </option>
-
-   </select>
-
-  </div>
-  <div class="formGroup">
-
-   <label>
-    Cell Leader *
-   </label>
-
-   <input
-    id="vipLeader"
-    type="text"
-    autocomplete="off"
-    placeholder="Enter Cell Leader">
-
-  </div>
-
-
-  <div class="formGroup">
-
-   <label>
-    Celebration *
-   </label>
-
-   <select id="vipCelebration">
-
-    <option value="">
-     Select Celebration
-    </option>
-
-    <option value="SUNDAY CELL CELEBRATION">
-     Sunday Cell Celebration
-    </option>
-
-    <option value="YOUTH CELL CELEBRATION">
-     Youth Cell Celebration
-    </option>
-
-   </select>
-
-  </div>
-
-
-  <button
-   class="primary"
-   id="vipSubmit"
-   onclick="submitVIP()">
-   SUBMIT VIP REGISTRATION
-  </button>
-
-
-  <div
-   id="vipStatus"
-   style="display:none">
-  </div>
-
-
-  <button
-   class="back"
-   onclick="goHome()">
-   ← BACK
-  </button>
-
- </div>
-
-
- <div class="footer">
-  PASSION CELL CELEBRATION
- </div>
-
+<div class="church">PASSION CITY CHURCH</div>
+
+<div id="homePage">
+ <h1>Welcome Home</h1>
+ <div class="subtitle">Passion Cell Celebration Attendance</div>
+ <button class="primary" onclick="showPage('eventPage')">SCAN REGULAR MEMBER</button>
+ <button class="secondary" onclick="openVIP()">REGISTER VIP / FIRST TIMER</button>
 </div>
 
+<div id="eventPage">
+ <h1>Select Celebration</h1>
+ <div class="subtitle">Choose today's celebration</div>
+ <button class="primary" onclick="openScanner('SUNDAY CELL CELEBRATION')">SUNDAY CELL CELEBRATION</button>
+ <button class="primary" onclick="openScanner('YOUTH CELL CELEBRATION')">YOUTH CELL CELEBRATION</button>
+ <button class="back" onclick="showPage('homePage')">← BACK</button>
+</div>
 
+<div id="scannerPage">
+ <h1>Scan Member QR</h1>
+ <div id="celebration" class="subtitle"></div>
+ <div id="reader"></div>
+ <div id="status">Starting camera...</div>
+ <button class="back" onclick="stopScanner()">← BACK</button>
+</div>
+
+<div id="vipPage">
+ <h1>VIP Registration</h1>
+ <div class="subtitle">Welcome to Passion City Church</div>
+
+ <div class="sectionTitle">GUEST INFORMATION</div>
+
+ <div class="formGroup">
+  <label>Full Name *</label>
+  <input id="vipName" type="text" placeholder="Enter full name">
+ </div>
+
+ <div class="formGroup">
+  <label>Age</label>
+  <input id="vipAge" type="number" min="1" max="120" placeholder="Age">
+ </div>
+
+ <div class="formGroup">
+  <label>Gender *</label>
+  <select id="vipGender">
+   <option value="">Select gender</option>
+   <option value="Male">Male</option>
+   <option value="Female">Female</option>
+  </select>
+ </div>
+
+ <div class="formGroup">
+  <label>Invited By</label>
+  <input id="vipInvitedBy" type="text" placeholder="Name of person who invited you">
+ </div>
+
+ <div class="sectionTitle">CHURCH INFORMATION</div>
+
+ <div class="formGroup">
+  <label>Primary Leader *</label>
+  <select id="vipPrimary">
+   <option value="">Select Primary Leader</option>
+   <option>Pastor Batch Reyes</option>
+   <option>Pastora Mel Reyes</option>
+   <option>Ps. Jonathan David Reyes</option>
+   <option>John Daniel Reyes</option>
+   <option>John Micah Wandaga</option>
+   <option>John Patrick Inanod</option>
+   <option>Jomari Miranda</option>
+   <option>Kerby Villegas</option>
+   <option>Mark Jude Mangiob</option>
+   <option>Gerald Toledo</option>
+   <option>Christopher Pegollo</option>
+   <option>Jhunebent Olazo</option>
+   <option>Garry Suzon</option>
+   <option>Caroline Suzon</option>
+   <option>Charmane Dinna Villegas</option>
+   <option>Ching Zolina</option>
+   <option>Elma Mayrina</option>
+   <option>Janette Sarah Toledo</option>
+   <option>Jhoy Olazo</option>
+   <option>Lieza Nicole Sison</option>
+   <option>Ma Socorro Padasas</option>
+   <option>Nitz Villacorte</option>
+   <option>Precious Ann Bayrante</option>
+   <option>Raven Mangiob</option>
+   <option>Riazel Kayle Tech</option>
+   <option>Susan Loreto</option>
+  </select>
+ </div>
+
+ <div class="formGroup">
+  <label>Cell Leader *</label>
+  <input id="vipLeader" type="text" placeholder="Enter Cell Leader">
+ </div>
+
+ <div class="formGroup">
+  <label>Celebration *</label>
+  <select id="vipCelebration">
+   <option value="">Select Celebration</option>
+   <option value="SUNDAY CELL CELEBRATION">Sunday Cell Celebration</option>
+   <option value="YOUTH CELL CELEBRATION">Youth Cell Celebration</option>
+  </select>
+ </div>
+
+ <button id="vipSubmit" class="primary" onclick="submitVIP()">SUBMIT VIP REGISTRATION</button>
+ <div id="vipStatus" style="display:none"></div>
+ <button class="back" onclick="showPage('homePage')">← BACK</button>
+</div>
+
+<div class="footer">PASSION CELL CELEBRATION</div>
+</div>
 <script>
 
 const API_URL =
 'https://script.google.com/macros/s/AKfycbxOBz-XZL8b16Fhg8XhpbX8M5w8U79WwQ6ethXJm8nHic39JdvyrJ7M_yYNaomKHWZo/exec';
 
-
 let qrScanner = null;
-
 let scanLocked = false;
-
 let selectedCelebration = '';
-
-let lastScannedCode = '';
-
-let lastScanTime = 0;
+let lastCode = '';
+let lastScan = 0;
 
 
+function showPage(id){
 
-function hidePages(){
-
- document.getElementById(
-  'homePage'
- ).style.display='none';
-
- document.getElementById(
-  'eventPage'
- ).style.display='none';
-
- document.getElementById(
-  'scannerPage'
- ).style.display='none';
-
- document.getElementById(
-  'vipPage'
- ).style.display='none';
+ ['homePage','eventPage','scannerPage','vipPage']
+ .forEach(function(page){
+  document.getElementById(page).style.display =
+   page === id ? 'block' : 'none';
+ });
 
 }
-
-
-
-function showEvents(){
-
- hidePages();
-
- document.getElementById(
-  'eventPage'
- ).style.display='block';
-
-}
-
 
 
 function openVIP(){
 
- hidePages();
-
- resetVIPForm();
-
- document.getElementById(
-  'vipPage'
- ).style.display='block';
+ clearVIP();
+ showPage('vipPage');
 
 }
 
 
+function clearVIP(){
 
-async function goHome(){
-
- if(qrScanner){
-
-  try{
-   await qrScanner.stop();
-  }catch(e){}
-
- }
-
- qrScanner=null;
-
- scanLocked=false;
-
- lastScannedCode='';
-
- hidePages();
-
- document.getElementById(
-  'homePage'
- ).style.display='block';
+ [
+  'vipName',
+  'vipAge',
+  'vipGender',
+  'vipInvitedBy',
+  'vipPrimary',
+  'vipLeader',
+  'vipCelebration'
+ ].forEach(function(id){
+  document.getElementById(id).value='';
+ });
 
 }
-
 
 
 async function openScanner(type){
 
- selectedCelebration=type;
+ selectedCelebration = type;
+ scanLocked = false;
+ lastCode = '';
+ lastScan = 0;
 
- scanLocked=false;
+ showPage('scannerPage');
 
- lastScannedCode='';
+ document.getElementById('celebration').textContent =
+  type;
 
- lastScanTime=0;
-
- hidePages();
-
- document.getElementById(
-  'scannerPage'
- ).style.display='block';
-
- document.getElementById(
-  'celebration'
- ).textContent=type;
-
- document.getElementById(
-  'status'
- ).innerHTML=
+ document.getElementById('status').innerHTML =
   'Opening rear camera...';
 
-
- qrScanner =
-  new Html5Qrcode('reader');
-
+ qrScanner = new Html5Qrcode('reader');
 
  const config = {
-
   fps:20,
-
   qrbox:function(w,h){
-
-   const size =
-    Math.floor(
-     Math.min(w,h) * 0.78
-    );
-
-   return{
-    width:size,
-    height:size
-   };
-
-  },
-
-  aspectRatio:1.0,
-
-  disableFlip:false
-
+   const s=Math.floor(Math.min(w,h)*0.78);
+   return {width:s,height:s};
+  }
  };
-
 
  try{
 
   await qrScanner.start(
-
-   {
-    facingMode:{
-     exact:'environment'
-    }
-   },
-
+   {facingMode:'environment'},
    config,
-
    onScanSuccess,
-
    function(){}
-
   );
 
-
-  document.getElementById(
-   'status'
-  ).innerHTML=
+  document.getElementById('status').innerHTML =
    'Ready to scan member QR.';
-
 
  }catch(error){
 
-
-  try{
-
-   await qrScanner.start(
-
-    {
-     facingMode:'environment'
-    },
-
-    config,
-
-    onScanSuccess,
-
-    function(){}
-
-   );
-
-
-   document.getElementById(
-    'status'
-   ).innerHTML=
-    'Ready to scan member QR.';
-
-
-  }catch(secondError){
-
-
-   document.getElementById(
-    'status'
-   ).innerHTML=
-    '<div class="error">'+
-    'CAMERA ERROR'+
-    '</div><br>'+
-    'Please allow camera access.';
-
-  }
+  document.getElementById('status').innerHTML =
+   '<div class="error">CAMERA ERROR</div>'+
+   '<br>Please allow camera access.';
 
  }
 
 }
 
 
+async function onScanSuccess(decodedText){
 
-async function onScanSuccess(
- decodedText
-){
-
- const now = Date.now();
-
-
- /*
-   Ignore repeated camera reads
-   of the exact same QR.
- */
+ const now=Date.now();
 
  if(
-  decodedText === lastScannedCode &&
-  now - lastScanTime < 2500
+  decodedText===lastCode &&
+  now-lastScan<2000
  ){
   return;
  }
 
-
- if(scanLocked){
-  return;
- }
-
+ if(scanLocked)return;
 
  scanLocked=true;
+ lastCode=decodedText;
+ lastScan=now;
 
- lastScannedCode=decodedText;
-
- lastScanTime=now;
-
-
- let memberId =
-  String(
-   decodedText || ''
-  )
+ let memberId=String(decodedText||'')
   .trim()
   .toUpperCase();
 
-
  try{
-
-  const qrUrl =
-   new URL(decodedText);
-
-
-  const id =
-   qrUrl.searchParams.get('id');
-
-
-  if(id){
-
-   memberId =
-    id
-    .trim()
-    .toUpperCase();
-
-  }
-
+  const u=new URL(decodedText);
+  const id=u.searchParams.get('id');
+  if(id) memberId=id.trim().toUpperCase();
  }catch(e){}
 
+ document.getElementById('status').innerHTML =
+  '<b>QR DETECTED</b><br>Checking attendance...';
 
- document.getElementById(
-  'status'
- ).innerHTML=
-  '<div class="processing">'+
-  'QR DETECTED'+
-  '</div>'+
-  'Checking attendance...';
-
-
- if(navigator.vibrate){
-  navigator.vibrate(70);
- }
-
+ if(navigator.vibrate) navigator.vibrate(60);
 
  try{
 
-  const requestUrl =
+  const url =
    API_URL+
-   '?id='+
-   encodeURIComponent(memberId)+
+   '?id='+encodeURIComponent(memberId)+
    '&celebration='+
-   encodeURIComponent(
-    selectedCelebration
-   )+
-   '&t='+
-   Date.now();
+   encodeURIComponent(selectedCelebration)+
+   '&t='+Date.now();
 
-
-  const response =
-   await fetch(
-    requestUrl,
-    {
-     method:'GET',
-     cache:'no-store'
-    }
-   );
-
-
-  const result =
-   await response.json();
-
+  const response=await fetch(url);
+  const result=await response.json();
 
   if(result.status==='success'){
 
-   document.getElementById(
-    'status'
-   ).innerHTML=
+   document.getElementById('status').innerHTML =
     '<div class="success">'+
     '✓ WELCOME TO PASSION CITY CHURCH'+
     '</div>'+
-    '<div class="name">'+
-    result.name+
-    '</div><br>'+
-    (result.network || '')+
-    '<br>Cell Leader: '+
-    (result.leader || '');
+    '<div class="name">'+result.name+'</div>'+
+    '<br>'+(result.network||'')+
+    '<br>Cell Leader: '+(result.leader||'');
 
+   if(navigator.vibrate)
+    navigator.vibrate([70,40,70]);
 
-   if(navigator.vibrate){
+  }else if(result.status==='duplicate'){
 
-    navigator.vibrate(
-     [80,50,80]
-    );
-
-   }
-
-  }
-
-
-  else if(
-   result.status==='duplicate'
-  ){
-
-   document.getElementById(
-    'status'
-   ).innerHTML=
+   document.getElementById('status').innerHTML =
     '<div class="duplicate">'+
     '⚠ ALREADY CHECKED IN'+
     '</div>'+
     '<div class="name">'+
-    result.name+
+    (result.name||'')+
+    '</div>';
+
+  }else{
+
+   document.getElementById('status').innerHTML =
+    '<div class="error">✕ '+
+    (result.message||'MEMBER NOT FOUND')+
     '</div>';
 
   }
-
-
-  else{
-
-   document.getElementById(
-    'status'
-   ).innerHTML=
-    '<div class="error">'+
-    '✕ '+
-    (
-     result.message ||
-     'MEMBER NOT FOUND'
-    )+
-    '</div>';
-
-  }
-
 
  }catch(error){
 
-  document.getElementById(
-   'status'
-  ).innerHTML=
-   '<div class="error">'+
-   'CONNECTION ERROR'+
-   '</div>'+
-   '<br>Please try again.';
+  document.getElementById('status').innerHTML =
+   '<div class="error">CONNECTION ERROR</div>'+
+   '<br>Please check attendance log before rescanning.';
 
  }
-
-
- /*
-   Short reset:
-   usher can scan next person
-   without restarting camera.
- */
 
  setTimeout(function(){
 
   scanLocked=false;
+  lastCode='';
 
-  lastScannedCode='';
-
-  document.getElementById(
-   'status'
-  ).innerHTML=
+  document.getElementById('status').innerHTML =
    'Ready for next member...';
 
  },1500);
 
 }
-
 
 
 async function stopScanner(){
@@ -981,384 +350,135 @@ async function stopScanner(){
  }
 
  qrScanner=null;
-
  scanLocked=false;
+ lastCode='';
 
- lastScannedCode='';
-
- hidePages();
-
- document.getElementById(
-  'eventPage'
- ).style.display='block';
+ showPage('eventPage');
 
 }
-function resetVIPForm(){
-
- document.getElementById(
-  'vipName'
- ).value='';
-
- document.getElementById(
-  'vipAge'
- ).value='';
-
- document.getElementById(
-  'vipGender'
- ).value='';
-
- document.getElementById(
-  'vipInvitedBy'
- ).value='';
-
- document.getElementById(
-  'vipPrimary'
- ).value='';
-
- document.getElementById(
-  'vipLeader'
- ).value='';
-
- document.getElementById(
-  'vipCelebration'
- ).value='';
-
-
- const statusBox =
-  document.getElementById(
-   'vipStatus'
-  );
-
-
- statusBox.style.display='none';
-
- statusBox.innerHTML='';
-
-
- const submitButton =
-  document.getElementById(
-   'vipSubmit'
-  );
-
-
- submitButton.disabled=false;
-
- submitButton.textContent=
-  'SUBMIT VIP REGISTRATION';
-
-}
-
 
 
 async function submitVIP(){
 
- const submitButton =
-  document.getElementById(
-   'vipSubmit'
-  );
+ const btn=document.getElementById('vipSubmit');
+ const box=document.getElementById('vipStatus');
 
+ if(btn.disabled)return;
 
- /*
-   Prevent double-click / double-submit.
- */
+ const name=document.getElementById('vipName').value.trim();
+ const age=document.getElementById('vipAge').value.trim();
+ const gender=document.getElementById('vipGender').value;
+ const invitedBy=document.getElementById('vipInvitedBy').value.trim();
+ const primary=document.getElementById('vipPrimary').value;
+ const leader=document.getElementById('vipLeader').value.trim();
+ const celebration=document.getElementById('vipCelebration').value;
 
- if(submitButton.disabled){
-  return;
- }
-
-
- const name =
-  document.getElementById(
-   'vipName'
-  ).value.trim();
-
-
- const age =
-  document.getElementById(
-   'vipAge'
-  ).value.trim();
-
-
- const gender =
-  document.getElementById(
-   'vipGender'
-  ).value;
-
-
- const invitedBy =
-  document.getElementById(
-   'vipInvitedBy'
-  ).value.trim();
-
-
- const primary =
-  document.getElementById(
-   'vipPrimary'
-  ).value;
-
-
- const leader =
-  document.getElementById(
-   'vipLeader'
-  ).value.trim();
-
-
- const celebration =
-  document.getElementById(
-   'vipCelebration'
-  ).value;
-
-
- const statusBox =
-  document.getElementById(
-   'vipStatus'
-  );
-
-
- statusBox.style.display='block';
-
-
- /*
-   FORM VALIDATION
- */
+ box.style.display='block';
 
  if(!name){
-
-  statusBox.innerHTML=
-   '<div class="error">'+
-   'PLEASE ENTER FULL NAME'+
-   '</div>';
-
+  box.innerHTML='<div class="error">PLEASE ENTER FULL NAME</div>';
   return;
-
  }
-
 
  if(!gender){
-
-  statusBox.innerHTML=
-   '<div class="error">'+
-   'PLEASE SELECT GENDER'+
-   '</div>';
-
+  box.innerHTML='<div class="error">PLEASE SELECT GENDER</div>';
   return;
-
  }
-
 
  if(!primary){
-
-  statusBox.innerHTML=
-   '<div class="error">'+
-   'PLEASE SELECT PRIMARY LEADER'+
-   '</div>';
-
+  box.innerHTML='<div class="error">PLEASE SELECT PRIMARY LEADER</div>';
   return;
-
  }
-
 
  if(!leader){
-
-  statusBox.innerHTML=
-   '<div class="error">'+
-   'PLEASE ENTER CELL LEADER'+
-   '</div>';
-
+  box.innerHTML='<div class="error">PLEASE ENTER CELL LEADER</div>';
   return;
-
  }
-
 
  if(!celebration){
-
-  statusBox.innerHTML=
-   '<div class="error">'+
-   'PLEASE SELECT CELEBRATION'+
-   '</div>';
-
+  box.innerHTML='<div class="error">PLEASE SELECT CELEBRATION</div>';
   return;
-
  }
 
+ btn.disabled=true;
+ btn.textContent='REGISTERING...';
 
- /*
-   Lock button immediately.
- */
+ box.innerHTML =
+  '<b>REGISTERING VIP...</b><br>Please wait.';
 
- submitButton.disabled=true;
-
- submitButton.textContent=
-  'REGISTERING...';
-
-
- statusBox.innerHTML=
-  '<div class="processing">'+
-  'REGISTERING VIP...'+
-  '</div>'+
-  'Please wait.';
-
+ const url =
+  API_URL+
+  '?action=vip'+
+  '&name='+encodeURIComponent(name)+
+  '&age='+encodeURIComponent(age)+
+  '&gender='+encodeURIComponent(gender)+
+  '&invitedBy='+encodeURIComponent(invitedBy)+
+  '&primary='+encodeURIComponent(primary)+
+  '&leader='+encodeURIComponent(leader)+
+  '&celebration='+encodeURIComponent(celebration)+
+  '&t='+Date.now();
 
  try{
 
-  const requestUrl =
-   API_URL+
-   '?action=vip'+
-   '&name='+
-   encodeURIComponent(name)+
-   '&age='+
-   encodeURIComponent(age)+
-   '&gender='+
-   encodeURIComponent(gender)+
-   '&invitedBy='+
-   encodeURIComponent(invitedBy)+
-   '&primary='+
-   encodeURIComponent(primary)+
-   '&leader='+
-   encodeURIComponent(leader)+
-   '&celebration='+
-   encodeURIComponent(celebration)+
-   '&t='+
-   Date.now();
-
-
-  const response =
-   await fetch(
-    requestUrl,
-    {
-     method:'GET',
-     cache:'no-store'
-    }
-   );
-
-
-  const result =
-   await response.json();
-
+  const response=await fetch(url);
+  const result=await response.json();
 
   if(result.status==='success'){
 
-   /*
-     Clear the form immediately
-     after successful registration.
-   */
+   clearVIP();
 
-   document.getElementById(
-    'vipName'
-   ).value='';
-
-   document.getElementById(
-    'vipAge'
-   ).value='';
-
-   document.getElementById(
-    'vipGender'
-   ).value='';
-
-   document.getElementById(
-    'vipInvitedBy'
-   ).value='';
-
-   document.getElementById(
-    'vipPrimary'
-   ).value='';
-
-   document.getElementById(
-    'vipLeader'
-   ).value='';
-
-   document.getElementById(
-    'vipCelebration'
-   ).value='';
-
-
-   statusBox.innerHTML=
+   box.innerHTML =
     '<div class="success">'+
     '✓ WELCOME TO PASSION CITY CHURCH'+
     '</div>'+
-    '<div class="name">'+
-    result.name+
-    '</div>'+
+    '<div class="name">'+result.name+'</div>'+
     '<br>VIP / FIRST TIMER'+
-    '<br>'+
-    (result.primary || '')+
-    '<br>Cell Leader: '+
-    (result.leader || '')+
-    '<br><br>'+
-    '<small>'+
-    'Ready for next VIP.'+
-    '</small>';
+    '<br>'+(result.primary||'')+
+    '<br>Cell Leader: '+(result.leader||'')+
+    '<br><br><small>Ready for next VIP.</small>';
 
+  }else if(result.status==='duplicate'){
 
-   if(navigator.vibrate){
-
-    navigator.vibrate(
-     [80,50,80]
-    );
-
-   }
-
-  }
-
-
-  else if(
-   result.status==='duplicate'
-  ){
-
-   /*
-     Duplicate is NOT an error.
-     No second attendance is added.
-   */
-
-   statusBox.innerHTML=
+   box.innerHTML =
     '<div class="duplicate">'+
     '⚠ VIP ALREADY CHECKED IN'+
     '</div>'+
     '<div class="name">'+
-    (result.name || name)+
+    (result.name||name)+
     '</div>'+
     '<br>No duplicate attendance was added.';
 
-  }
+  }else{
 
-
-  else{
-
-   statusBox.innerHTML=
-    '<div class="error">'+
-    '✕ '+
-    (
-     result.message ||
-     'REGISTRATION FAILED'
-    )+
+   box.innerHTML =
+    '<div class="error">✕ '+
+    (result.message||'REGISTRATION FAILED')+
     '</div>';
 
   }
 
-
  }catch(error){
 
-  statusBox.innerHTML=
-   '<div class="error">'+
-   'CONNECTION ERROR'+
-   '</div>'+
-   '<br>Please try again.';
+  /*
+    Apps Script can save successfully while
+    the browser fails to read the redirected
+    response. We DO NOT automatically claim
+    success here, because that could hide a
+    genuine failed registration.
+  */
+
+  box.innerHTML =
+   '<div class="error">RESPONSE ERROR</div>'+
+   '<br>The server response could not be confirmed.'+
+   '<br><b>Do not submit again yet.</b>';
 
  }
 
-
- /*
-   Always unlock after server response.
- */
-
- submitButton.disabled=false;
-
- submitButton.textContent=
-  'SUBMIT VIP REGISTRATION';
+ btn.disabled=false;
+ btn.textContent='SUBMIT VIP REGISTRATION';
 
 }
 
 </script>
-
 </body>
-</html> 
+</html>
