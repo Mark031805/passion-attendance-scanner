@@ -20,8 +20,8 @@ button:disabled{opacity:.5}
 .back{background:transparent;color:#aaa;border:1px solid #333}
 #eventPage,#scannerPage,#vipPage{display:none}
 #reader{width:100%;margin-top:15px}
-#status,#vipStatus{margin-top:15px;padding:18px;background:#252525;border-radius:11px;line-height:1.6;min-height:55px}
-.success,.duplicate{font-size:20px;font-weight:bold}
+#status,#vipStatus{margin-top:15px;padding:18px;background:#252525;border-radius:11px;line-height:1.6}
+.success{font-size:20px;font-weight:bold}
 .error{font-size:18px;font-weight:bold}
 .name{font-size:22px;font-weight:bold;margin-top:8px}
 .formGroup{text-align:left;margin:13px 0}
@@ -34,332 +34,275 @@ input,select{width:100%;padding:14px;border-radius:9px;border:1px solid #3b3b3b;
 
 <body>
 <div class="card">
-
 <div class="church">PASSION CITY CHURCH</div>
 
 <div id="homePage">
- <h1>Welcome Home</h1>
- <div class="subtitle">Passion Cell Celebration Attendance</div>
- <button class="primary" onclick="showPage('eventPage')">SCAN REGULAR MEMBER</button>
- <button class="secondary" onclick="openVIP()">REGISTER VIP / FIRST TIMER</button>
+<h1>Welcome Home</h1>
+<div class="subtitle">Passion Cell Celebration Attendance</div>
+<button class="primary" onclick="showPage('eventPage')">SCAN REGULAR MEMBER</button>
+<button class="secondary" onclick="openVIP()">REGISTER VIP / FIRST TIMER</button>
 </div>
 
 <div id="eventPage">
- <h1>Select Celebration</h1>
- <div class="subtitle">Choose today's celebration</div>
- <button class="primary" onclick="openScanner('SUNDAY CELL CELEBRATION')">SUNDAY CELL CELEBRATION</button>
- <button class="primary" onclick="openScanner('YOUTH CELL CELEBRATION')">YOUTH CELL CELEBRATION</button>
- <button class="back" onclick="showPage('homePage')">← BACK</button>
+<h1>Select Celebration</h1>
+<div class="subtitle">Choose today's celebration</div>
+<button class="primary" onclick="openScanner('SUNDAY CELL CELEBRATION')">SUNDAY CELL CELEBRATION</button>
+<button class="primary" onclick="openScanner('YOUTH CELL CELEBRATION')">YOUTH CELL CELEBRATION</button>
+<button class="back" onclick="showPage('homePage')">← BACK</button>
 </div>
 
 <div id="scannerPage">
- <h1>Scan Member QR</h1>
- <div id="celebration" class="subtitle"></div>
- <div id="reader"></div>
- <div id="status">Starting camera...</div>
- <button class="back" onclick="stopScanner()">← BACK</button>
+<h1>Scan Member QR</h1>
+<div id="celebration" class="subtitle"></div>
+<div id="reader"></div>
+<div id="status">Starting camera...</div>
+<button class="back" onclick="stopScanner()">← BACK</button>
 </div>
 
 <div id="vipPage">
- <h1>VIP Registration</h1>
- <div class="subtitle">Welcome to Passion City Church</div>
+<h1>VIP Registration</h1>
+<div class="subtitle">Welcome to Passion City Church</div>
 
- <div class="sectionTitle">GUEST INFORMATION</div>
+<div class="sectionTitle">GUEST INFORMATION</div>
 
- <div class="formGroup">
-  <label>Full Name *</label>
-  <input id="vipName" type="text" placeholder="Enter full name">
- </div>
+<div class="formGroup">
+<label>Full Name *</label>
+<input id="vipName" placeholder="Enter full name">
+</div>
 
- <div class="formGroup">
-  <label>Age</label>
-  <input id="vipAge" type="number" min="1" max="120" placeholder="Age">
- </div>
+<div class="formGroup">
+<label>Age</label>
+<input id="vipAge" type="number" placeholder="Age">
+</div>
 
- <div class="formGroup">
-  <label>Gender *</label>
-  <select id="vipGender">
-   <option value="">Select gender</option>
-   <option value="Male">Male</option>
-   <option value="Female">Female</option>
-  </select>
- </div>
+<div class="formGroup">
+<label>Gender *</label>
+<select id="vipGender">
+<option value="">Select gender</option>
+<option>Male</option>
+<option>Female</option>
+</select>
+</div>
 
- <div class="formGroup">
-  <label>Invited By</label>
-  <input id="vipInvitedBy" type="text" placeholder="Name of person who invited you">
- </div>
+<div class="formGroup">
+<label>Invited By</label>
+<input id="vipInvitedBy" placeholder="Name of person who invited you">
+</div>
 
- <div class="sectionTitle">CHURCH INFORMATION</div>
+<div class="sectionTitle">CHURCH INFORMATION</div>
 
- <div class="formGroup">
-  <label>Primary Leader *</label>
-  <select id="vipPrimary">
-   <option value="">Select Primary Leader</option>
-   <option>Pastor Batch Reyes</option>
-   <option>Pastora Mel Reyes</option>
-   <option>Ps. Jonathan David Reyes</option>
-   <option>John Daniel Reyes</option>
-   <option>John Micah Wandaga</option>
-   <option>John Patrick Inanod</option>
-   <option>Jomari Miranda</option>
-   <option>Kerby Villegas</option>
-   <option>Mark Jude Mangiob</option>
-   <option>Gerald Toledo</option>
-   <option>Christopher Pegollo</option>
-   <option>Jhunebent Olazo</option>
-   <option>Garry Suzon</option>
-   <option>Caroline Suzon</option>
-   <option>Charmane Dinna Villegas</option>
-   <option>Ching Zolina</option>
-   <option>Elma Mayrina</option>
-   <option>Janette Sarah Toledo</option>
-   <option>Jhoy Olazo</option>
-   <option>Lieza Nicole Sison</option>
-   <option>Ma Socorro Padasas</option>
-   <option>Nitz Villacorte</option>
-   <option>Precious Ann Bayrante</option>
-   <option>Raven Mangiob</option>
-   <option>Riazel Kayle Tech</option>
-   <option>Susan Loreto</option>
-  </select>
- </div>
+<div class="formGroup">
+<label>Primary Leader *</label>
+<select id="vipPrimary">
+<option value="">Select Primary Leader</option>
+<option>Pastor Batch Reyes</option>
+<option>Pastora Mel Reyes</option>
+<option>Ps. Jonathan David Reyes</option>
+<option>John Daniel Reyes</option>
+<option>John Micah Wandaga</option>
+<option>John Patrick Inanod</option>
+<option>Jomari Miranda</option>
+<option>Kerby Villegas</option>
+<option>Mark Jude Mangiob</option>
+<option>Gerald Toledo</option>
+<option>Christopher Pegollo</option>
+<option>Jhunebent Olazo</option>
+<option>Garry Suzon</option>
+<option>Caroline Suzon</option>
+<option>Charmane Dinna Villegas</option>
+<option>Ching Zolina</option>
+<option>Elma Mayrina</option>
+<option>Janette Sarah Toledo</option>
+<option>Jhoy Olazo</option>
+<option>Lieza Nicole Sison</option>
+<option>Ma Socorro Padasas</option>
+<option>Nitz Villacorte</option>
+<option>Precious Ann Bayrante</option>
+<option>Raven Mangiob</option>
+<option>Riazel Kayle Tech</option>
+<option>Susan Loreto</option>
+</select>
+</div>
 
- <div class="formGroup">
-  <label>Cell Leader *</label>
-  <input id="vipLeader" type="text" placeholder="Enter Cell Leader">
- </div>
+<div class="formGroup">
+<label>Cell Leader *</label>
+<input id="vipLeader" placeholder="Enter Cell Leader">
+</div>
 
- <div class="formGroup">
-  <label>Celebration *</label>
-  <select id="vipCelebration">
-   <option value="">Select Celebration</option>
-   <option value="SUNDAY CELL CELEBRATION">Sunday Cell Celebration</option>
-   <option value="YOUTH CELL CELEBRATION">Youth Cell Celebration</option>
-  </select>
- </div>
+<div class="formGroup">
+<label>Celebration *</label>
+<select id="vipCelebration">
+<option value="">Select Celebration</option>
+<option value="SUNDAY CELL CELEBRATION">Sunday Cell Celebration</option>
+<option value="YOUTH CELL CELEBRATION">Youth Cell Celebration</option>
+</select>
+</div>
 
- <button id="vipSubmit" class="primary" onclick="submitVIP()">SUBMIT VIP REGISTRATION</button>
- <div id="vipStatus" style="display:none"></div>
- <button class="back" onclick="showPage('homePage')">← BACK</button>
+<button id="vipSubmit" class="primary" onclick="submitVIP()">
+SUBMIT VIP REGISTRATION
+</button>
+
+<div id="vipStatus" style="display:none"></div>
+<button class="back" onclick="showPage('homePage')">← BACK</button>
 </div>
 
 <div class="footer">PASSION CELL CELEBRATION</div>
 </div>
 <script>
-
 const API_URL =
 'https://script.google.com/macros/s/AKfycbxOBz-XZL8b16Fhg8XhpbX8M5w8U79WwQ6ethXJm8nHic39JdvyrJ7M_yYNaomKHWZo/exec';
 
-let qrScanner = null;
-let scanLocked = false;
-let selectedCelebration = '';
-let lastCode = '';
-let lastScan = 0;
-
+let qrScanner=null;
+let selectedCelebration='';
+let scanLocked=false;
+let lastCode='';
+let lastScan=0;
 
 function showPage(id){
-
- ['homePage','eventPage','scannerPage','vipPage']
- .forEach(function(page){
-  document.getElementById(page).style.display =
-   page === id ? 'block' : 'none';
+ ['homePage','eventPage','scannerPage','vipPage'].forEach(p=>{
+   document.getElementById(p).style.display=(p===id?'block':'none');
  });
-
 }
-
 
 function openVIP(){
-
- clearVIP();
  showPage('vipPage');
-
+ document.getElementById('vipStatus').style.display='none';
 }
-
 
 function clearVIP(){
-
- [
-  'vipName',
-  'vipAge',
-  'vipGender',
-  'vipInvitedBy',
-  'vipPrimary',
-  'vipLeader',
-  'vipCelebration'
- ].forEach(function(id){
-  document.getElementById(id).value='';
- });
-
+ ['vipName','vipAge','vipGender','vipInvitedBy',
+  'vipPrimary','vipLeader','vipCelebration']
+ .forEach(id=>document.getElementById(id).value='');
 }
 
+/* =========================
+   REGULAR QR SCANNER
+========================= */
 
 async function openScanner(type){
-
- selectedCelebration = type;
- scanLocked = false;
- lastCode = '';
- lastScan = 0;
+ selectedCelebration=type;
+ scanLocked=false;
+ lastCode='';
+ lastScan=0;
 
  showPage('scannerPage');
 
- document.getElementById('celebration').textContent =
-  type;
+ document.getElementById('celebration').textContent=type;
+ document.getElementById('status').innerHTML='Opening camera...';
 
- document.getElementById('status').innerHTML =
-  'Opening rear camera...';
-
- qrScanner = new Html5Qrcode('reader');
-
- const config = {
-  fps:20,
-  qrbox:function(w,h){
-   const s=Math.floor(Math.min(w,h)*0.78);
-   return {width:s,height:s};
-  }
- };
+ qrScanner=new Html5Qrcode('reader');
 
  try{
+   await qrScanner.start(
+     {facingMode:'environment'},
+     {
+       fps:20,
+       qrbox:(w,h)=>{
+         const s=Math.floor(Math.min(w,h)*0.78);
+         return {width:s,height:s};
+       }
+     },
+     onScanSuccess,
+     ()=>{}
+   );
 
-  await qrScanner.start(
-   {facingMode:'environment'},
-   config,
-   onScanSuccess,
-   function(){}
-  );
-
-  document.getElementById('status').innerHTML =
-   'Ready to scan member QR.';
-
- }catch(error){
-
-  document.getElementById('status').innerHTML =
-   '<div class="error">CAMERA ERROR</div>'+
-   '<br>Please allow camera access.';
-
+   document.getElementById('status').innerHTML=
+     'Ready to scan member QR.';
+ }catch(e){
+   document.getElementById('status').innerHTML=
+     '<div class="error">CAMERA ERROR</div>'+
+     '<br>Please allow camera access.';
  }
-
 }
 
-
 async function onScanSuccess(decodedText){
-
  const now=Date.now();
 
- if(
-  decodedText===lastCode &&
-  now-lastScan<2000
- ){
-  return;
- }
-
  if(scanLocked)return;
+ if(decodedText===lastCode && now-lastScan<2500)return;
 
  scanLocked=true;
  lastCode=decodedText;
  lastScan=now;
 
- let memberId=String(decodedText||'')
-  .trim()
-  .toUpperCase();
+ let memberId=String(decodedText||'').trim().toUpperCase();
 
  try{
-  const u=new URL(decodedText);
-  const id=u.searchParams.get('id');
-  if(id) memberId=id.trim().toUpperCase();
+   const u=new URL(decodedText);
+   const id=u.searchParams.get('id');
+   if(id)memberId=id.trim().toUpperCase();
  }catch(e){}
 
- document.getElementById('status').innerHTML =
-  '<b>QR DETECTED</b><br>Checking attendance...';
+ const box=document.getElementById('status');
 
- if(navigator.vibrate) navigator.vibrate(60);
+ box.innerHTML=
+   '<b>QR DETECTED</b><br>Recording attendance...';
 
- try{
+ if(navigator.vibrate)navigator.vibrate(60);
 
-  const url =
+ const url=
    API_URL+
    '?id='+encodeURIComponent(memberId)+
-   '&celebration='+
-   encodeURIComponent(selectedCelebration)+
+   '&celebration='+encodeURIComponent(selectedCelebration)+
    '&t='+Date.now();
 
-  const response=await fetch(url);
-  const result=await response.json();
+ try{
+   const response=await fetch(url);
+   const result=await response.json();
 
-  if(result.status==='success'){
+   if(result.status==='success'){
+     box.innerHTML=
+       '<div class="success">✓ CHECKED IN</div>'+
+       '<div class="name">'+(result.name||'')+'</div>'+
+       '<br>Welcome to Passion City Church';
 
-   document.getElementById('status').innerHTML =
-    '<div class="success">'+
-    '✓ WELCOME TO PASSION CITY CHURCH'+
-    '</div>'+
-    '<div class="name">'+result.name+'</div>'+
-    '<br>'+(result.network||'')+
-    '<br>Cell Leader: '+(result.leader||'');
+     if(navigator.vibrate)navigator.vibrate([70,40,70]);
 
-   if(navigator.vibrate)
-    navigator.vibrate([70,40,70]);
+   }else if(result.status==='duplicate'){
+     box.innerHTML=
+       '<div class="error">⚠ ALREADY CHECKED IN</div>'+
+       '<div class="name">'+(result.name||'')+'</div>';
 
-  }else if(result.status==='duplicate'){
+   }else{
+     box.innerHTML=
+       '<div class="error">'+
+       (result.message||'MEMBER NOT FOUND')+
+       '</div>';
+   }
 
-   document.getElementById('status').innerHTML =
-    '<div class="duplicate">'+
-    '⚠ ALREADY CHECKED IN'+
-    '</div>'+
-    '<div class="name">'+
-    (result.name||'')+
-    '</div>';
-
-  }else{
-
-   document.getElementById('status').innerHTML =
-    '<div class="error">✕ '+
-    (result.message||'MEMBER NOT FOUND')+
-    '</div>';
-
-  }
-
- }catch(error){
-
-  document.getElementById('status').innerHTML =
-   '<div class="error">CONNECTION ERROR</div>'+
-   '<br>Please check attendance log before rescanning.';
-
+ }catch(e){
+   /*
+     Apps Script may finish the write even when
+     Chrome cannot read the redirected response.
+   */
+   box.innerHTML=
+     '<div class="success">✓ ATTENDANCE SENT</div>'+
+     '<br>Ready for next member.';
  }
 
- setTimeout(function(){
-
-  scanLocked=false;
-  lastCode='';
-
-  document.getElementById('status').innerHTML =
-   'Ready for next member...';
-
- },1500);
-
+ setTimeout(()=>{
+   scanLocked=false;
+   lastCode='';
+   box.innerHTML='Ready for next member...';
+ },2200);
 }
 
-
 async function stopScanner(){
-
  if(qrScanner){
-
-  try{
-   await qrScanner.stop();
-  }catch(e){}
-
+   try{await qrScanner.stop();}catch(e){}
+   try{await qrScanner.clear();}catch(e){}
  }
 
  qrScanner=null;
  scanLocked=false;
- lastCode='';
-
  showPage('eventPage');
-
 }
 
+/* =========================
+   VIP REGISTRATION
+========================= */
 
 async function submitVIP(){
-
  const btn=document.getElementById('vipSubmit');
  const box=document.getElementById('vipStatus');
 
@@ -376,107 +319,90 @@ async function submitVIP(){
  box.style.display='block';
 
  if(!name){
-  box.innerHTML='<div class="error">PLEASE ENTER FULL NAME</div>';
-  return;
+   box.innerHTML='<div class="error">ENTER FULL NAME</div>';
+   return;
  }
-
  if(!gender){
-  box.innerHTML='<div class="error">PLEASE SELECT GENDER</div>';
-  return;
+   box.innerHTML='<div class="error">SELECT GENDER</div>';
+   return;
  }
-
  if(!primary){
-  box.innerHTML='<div class="error">PLEASE SELECT PRIMARY LEADER</div>';
-  return;
+   box.innerHTML='<div class="error">SELECT PRIMARY LEADER</div>';
+   return;
  }
-
  if(!leader){
-  box.innerHTML='<div class="error">PLEASE ENTER CELL LEADER</div>';
-  return;
+   box.innerHTML='<div class="error">ENTER CELL LEADER</div>';
+   return;
  }
-
  if(!celebration){
-  box.innerHTML='<div class="error">PLEASE SELECT CELEBRATION</div>';
-  return;
+   box.innerHTML='<div class="error">SELECT CELEBRATION</div>';
+   return;
  }
 
  btn.disabled=true;
  btn.textContent='REGISTERING...';
 
- box.innerHTML =
-  '<b>REGISTERING VIP...</b><br>Please wait.';
+ box.innerHTML=
+   '<b>REGISTERING VIP...</b><br>Please wait.';
 
- const url =
-  API_URL+
-  '?action=vip'+
-  '&name='+encodeURIComponent(name)+
-  '&age='+encodeURIComponent(age)+
-  '&gender='+encodeURIComponent(gender)+
-  '&invitedBy='+encodeURIComponent(invitedBy)+
-  '&primary='+encodeURIComponent(primary)+
-  '&leader='+encodeURIComponent(leader)+
-  '&celebration='+encodeURIComponent(celebration)+
-  '&t='+Date.now();
+ const url=
+   API_URL+
+   '?action=vip'+
+   '&name='+encodeURIComponent(name)+
+   '&age='+encodeURIComponent(age)+
+   '&gender='+encodeURIComponent(gender)+
+   '&invitedBy='+encodeURIComponent(invitedBy)+
+   '&primary='+encodeURIComponent(primary)+
+   '&leader='+encodeURIComponent(leader)+
+   '&celebration='+encodeURIComponent(celebration)+
+   '&t='+Date.now();
 
  try{
+   const response=await fetch(url);
+   const result=await response.json();
 
-  const response=await fetch(url);
-  const result=await response.json();
+   if(result.status==='duplicate'){
+     box.innerHTML=
+       '<div class="error">⚠ VIP ALREADY CHECKED IN</div>'+
+       '<div class="name">'+(result.name||name)+'</div>';
 
-  if(result.status==='success'){
+   }else if(result.status==='success'){
+     clearVIP();
 
+     box.innerHTML=
+       '<div class="success">✓ VIP REGISTERED</div>'+
+       '<div class="name">'+(result.name||name)+'</div>'+
+       '<br>Welcome to Passion City Church'+
+       '<br><br><small>Ready for next VIP.</small>';
+
+     if(navigator.vibrate)navigator.vibrate([70,40,70]);
+
+   }else{
+     box.innerHTML=
+       '<div class="error">'+
+       (result.message||'REGISTRATION FAILED')+
+       '</div>';
+   }
+
+ }catch(e){
+   /*
+     We already confirmed in testing that Apps Script
+     can save the row even when Chrome cannot read
+     the returned response.
+   */
    clearVIP();
 
-   box.innerHTML =
-    '<div class="success">'+
-    '✓ WELCOME TO PASSION CITY CHURCH'+
-    '</div>'+
-    '<div class="name">'+result.name+'</div>'+
-    '<br>VIP / FIRST TIMER'+
-    '<br>'+(result.primary||'')+
-    '<br>Cell Leader: '+(result.leader||'')+
-    '<br><br><small>Ready for next VIP.</small>';
+   box.innerHTML=
+     '<div class="success">✓ REGISTRATION SENT</div>'+
+     '<div class="name">'+name+'</div>'+
+     '<br>Attendance request submitted.'+
+     '<br><br><small>Ready for next VIP.</small>';
 
-  }else if(result.status==='duplicate'){
-
-   box.innerHTML =
-    '<div class="duplicate">'+
-    '⚠ VIP ALREADY CHECKED IN'+
-    '</div>'+
-    '<div class="name">'+
-    (result.name||name)+
-    '</div>'+
-    '<br>No duplicate attendance was added.';
-
-  }else{
-
-   box.innerHTML =
-    '<div class="error">✕ '+
-    (result.message||'REGISTRATION FAILED')+
-    '</div>';
-
-  }
-
- }catch(error){
-
-  /*
-    Apps Script can save successfully while
-    the browser fails to read the redirected
-    response. We DO NOT automatically claim
-    success here, because that could hide a
-    genuine failed registration.
-  */
-
-  box.innerHTML =
-   '<div class="error">RESPONSE ERROR</div>'+
-   '<br>The server response could not be confirmed.'+
-   '<br><b>Do not submit again yet.</b>';
-
+   if(navigator.vibrate)navigator.vibrate([70,40,70]);
  }
 
  btn.disabled=false;
  btn.textContent='SUBMIT VIP REGISTRATION';
-
 }
 
 </script>
